@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
@@ -12,6 +13,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        buildConfigField 'String', 'HOST', '"http://api.openweathermap.org/"'
     }
     buildTypes {
         release {
@@ -24,20 +26,53 @@ android {
 
 buildscript{
     repositories{
-        jcenter()
+        mavenCentral()
     }
     dependencies{
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
+
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //UI
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'org.jetbrains.anko:anko-sdk15:0.8.3' // sdk19, sdk21, sdk23 are also available
-    compile 'org.jetbrains.anko:anko-support-v4:0.8.3' // In case you need support-v4 bindings
+    compile 'org.jetbrains.anko:anko-support-v4:0.8.3'
     compile 'org.jetbrains.anko:anko-appcompat-v7:0.8.3'
     compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.jakewharton:butterknife:8.0.1'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+
+    //Network
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
+    compile 'com.google.code.gson:gson:2.4'
+
+    //Inject
+    compile 'com.google.dagger:dagger:2.0.2'
+    kapt 'com.google.dagger:dagger-compiler:2.0.2'
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+
+    //RX
+    compile 'io.reactivex:rxjava:1.1.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxkotlin:0.55.0'
+    compile 'com.trello:rxlifecycle-kotlin:0.6.0'
+    compile 'com.trello:rxlifecycle-components:0.6.0'
+
+
+
 }
